@@ -1,0 +1,54 @@
+/* Master Styles */
+h1 {
+  color: #369;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 250%;
+}
+h2, h3 {
+  color: #444;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: lighter;
+}
+body {
+  margin: 2em;
+  padding-left: 10%; padding-right: 10%;
+}
+
+table {
+        width: 100%;
+    }
+
+thead, tbody, tr, td, th { display: block; }
+
+tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+thead th {
+    height: 30px;
+
+    /*text-align: left;*/
+}
+
+tbody {
+    max-height: 500px;
+    overflow-y: scroll;
+}
+
+thead {
+    /* fallback */
+    width: calc(100% - 17px);
+}
+
+tbody td, thead th {
+    float: left;
+}
+
+.clClass td:nth-child(1), .clClass th:nth-child(1){width: calc(50% - 155px)}
+.clClass td:nth-child(2), .clClass th:nth-child(2){width: calc(50% - 155px)}
+.clClass td:nth-child(3), .clClass th:nth-child(3){width: 200px;}
+.clClass td:nth-child(4), .clClass th:nth-child(4){text-align: center; width: 50px;}
+.clClass td:nth-child(5), .clClass th:nth-child(5){text-align: center; width: 60px;}

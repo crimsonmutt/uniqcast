@@ -1,0 +1,91 @@
+<div class="container clClass">
+    <button style="float: left;" class="btn btn-primary" (click)="this.stateChange.emit(0)"><i class="fa fa-sign-out"></i> Log Out</button>
+    <button style="float: right;" class="btn btn-primary" (click)="this.stateChange.emit(1)">Go to Packets</button>
+    <h2 style="text-align: center;"><i class="fa fa-list"></i><span> Channel List</span></h2>
+    <h2 *ngIf="loading == true" style="text-align: center;"><i class="fa fa-spinner fa-spin fa-2x"></i></h2>
+
+    <h3 style="text-align: center;" class="col-sm-12" *ngIf="loading == false && channelList.length == 0">No packets in list.</h3>
+    <table *ngIf="loading == false && channelList.length > 0" style="table-layout: fixed; width: 100%" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Channel Name</th>
+                <th>Channel URL</th>
+                <th>Assigned Package</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let channel of channelList">
+                <td>{{ channel.name }}</td>
+                <td>{{ channel.url }}</td>
+                <td>
+                    <span *ngIf="channel.package == undefined">
+                        <i>none</i>
+                    </span>
+                    <span *ngIf="channel.package != undefined">
+                        {{ channel.package.name }}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn btn-primary" (click)="localState=2; candidate = {id: channel.id, name: channel.name, url: channel.quota}; setPackage(channel.package);">
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-primary" (click)="candidate = {id: channel.id, name: channel.name, url: channel.quota}; setPackage(channel.package); deleteChannel();">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="localState == 0">
+        <button (click)="localState=1" class="btn btn-primary"><i class="fa fa-plus"></i> Add Channel</button>
+    </div>
+    <div *ngIf="localState == 1" class="container">
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="addname">Name:</label>
+                <input ngModel #addName="ngModel" bindon-ngModel="candidate.name" type="text" class="form-control" id="addname" required>
+            </div>
+            <div class="form-group">
+                <label for="addURL">URL:</label>
+                <input bindon-ngModel="candidate.url" type="text" class="form-control" id="addURL">
+            </div>
+            <div class="form-group">
+                <label for="addpackage">Package:</label>
+                <select bindon-ngModel="candidate.package" type="text" class="form-control" id="addpackage">
+                    <option value="0"><i>none</i></option>
+                    <option *ngFor="let packet of packetList; let i = index" value="{{ i+1 }}">{{ packet.name }}</option>
+                </select>
+            </div>
+            <button (click)="localState=0; addChannel();" [disabled]="!addName.valid" class="btn btn-primary"><i class="fa fa-plus"></i> Confirm</button>
+            <button (click)="localState=0; wipeCandidate();" class="btn btn-primary"><i class="fa fa-times"></i> Cancel</button>
+        </div>
+        <span *ngIf="!addName.valid" class="help-block" style="color: #a94442">Name is required</span>
+    </div>
+    <div *ngIf="localState == 2" class="container">
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="editname">Name:</label>
+                <input ngModel #editName="ngModel" bindon-ngModel="candidate.name" type="text" class="form-control" id="editname" required>
+            </div>
+            <div class="form-group">
+                <label for="editurl">Quota:</label>
+                <input bindon-ngModel="candidate.url" type="text" class="form-control" id="editurl">
+            </div>
+            <div class="form-group">
+                <label for="editpackage">Package:</label>
+                <select bindon-ngModel="candidate.package" type="text" class="form-control" id="editpackage">
+                    <option value="0"><i>none</i></option>
+                    <option *ngFor="let packet of packetList; let i = index" value="{{ i+1 }}">{{ packet.name }}</option>
+                </select>
+            </div>
+            <button (click)="localState=0; editChannel();" [disabled]="!addName.valid" class="btn btn-primary"><i class="fa fa-pencil"></i> Confirm</button>
+            <button (click)="localState=0; wipeCandidate();" class="btn btn-primary"><i class="fa fa-times"></i> Cancel</button>
+        </div>
+        <span *ngIf="!editName.valid" class="help-block" style="color: #a94442">Name is required</span>
+    </div>
+    <hr>
+</div>
